@@ -1,0 +1,508 @@
+{
+  "openapi": "3.0.0",
+  "info": { "title": "app", "version": "version" },
+  "paths": {
+    "/category": {
+      "get": {
+        "summary": "List categories",
+        "operationId": "list_category",
+        "parameters": [
+          {
+            "name": "orderBy",
+            "in": "query",
+            "schema": { "type": "string", "enum": ["name", "slug"] }
+          },
+          {
+            "name": "order",
+            "in": "query",
+            "schema": { "type": "string", "enum": ["asc", "desc"] }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "schema": { "type": "integer" },
+            "default": 0
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": { "type": "integer" },
+            "default": 50
+          },
+          {
+            "in": "query",
+            "name": "join[contact]",
+            "style": "deepObject",
+            "explode": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": ["name", "email", "phone", "image"]
+              }
+            }
+          },
+          {
+            "in": "query",
+            "name": "join[segment]",
+            "style": "deepObject",
+            "explode": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": ["name", "slug", "intro", "contacts"]
+              }
+            }
+          },
+          {
+            "in": "query",
+            "name": "join[category]",
+            "style": "deepObject",
+            "explode": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "name",
+                  "slug",
+                  "categoryCluster",
+                  "subheader",
+                  "programs",
+                  "externalPrograms",
+                  "contacts",
+                  "sections",
+                  "magazineTeaser"
+                ]
+              }
+            }
+          },
+          {
+            "in": "query",
+            "name": "join[document]",
+            "style": "deepObject",
+            "explode": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": ["name", "type", "file", "keywords"]
+              }
+            }
+          },
+          {
+            "in": "query",
+            "name": "join[documentType]",
+            "style": "deepObject",
+            "explode": true,
+            "schema": {
+              "type": "array",
+              "items": { "type": "string", "enum": ["name"] }
+            }
+          },
+          {
+            "in": "query",
+            "name": "join[event]",
+            "style": "deepObject",
+            "explode": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "title",
+                  "text",
+                  "dates",
+                  "location",
+                  "category",
+                  "ctaHref"
+                ]
+              }
+            }
+          },
+          {
+            "in": "query",
+            "name": "join[programType]",
+            "style": "deepObject",
+            "explode": true,
+            "schema": {
+              "type": "array",
+              "items": { "type": "string", "enum": ["name"] }
+            }
+          },
+          {
+            "in": "query",
+            "name": "join[jobCategory]",
+            "style": "deepObject",
+            "explode": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": ["name", "teaser", "headline", "intro"]
+              }
+            }
+          },
+          {
+            "in": "query",
+            "name": "join[jobOffer]",
+            "style": "deepObject",
+            "explode": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "name",
+                  "slug",
+                  "category",
+                  "date",
+                  "employmentType",
+                  "employmentSchema"
+                ]
+              }
+            }
+          },
+          {
+            "in": "query",
+            "name": "join[pressRelease]",
+            "style": "deepObject",
+            "explode": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": ["title", "slug", "date", "text", "pdf", "images"]
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of categories",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "total": { "type": "integer" },
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "allOf": [
+                          { "$ref": "#/components/schemas/Category" },
+                          {
+                            "type": "object",
+                            "properties": { "_id": { "type": "number" } },
+                            "required": ["_id"]
+                          }
+                        ]
+                      }
+                    },
+                    "_refs": {
+                      "type": "object",
+                      "properties": {
+                        "media": {
+                          "type": "object",
+                          "additionalProperties": {
+                            "$ref": "#/components/schemas/Media"
+                          }
+                        },
+                        "content": {
+                          "type": "object",
+                          "properties": {
+                            "contact": {
+                              "type": "object",
+                              "additionalProperties": {
+                                "$ref": "#/components/schemas/Contact"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "required": ["total", "items", "_refs"]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/category/{id}": {
+      "get": {
+        "summary": "Load category",
+        "operationId": "load_category",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "in": "query",
+            "name": "join[contact]",
+            "style": "deepObject",
+            "explode": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": ["name", "email", "phone", "image", "serviceCenter"]
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "category found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    { "$ref": "#/components/schemas/Category" },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "_id": { "type": "number" },
+                        "_refs": {
+                          "type": "object",
+                          "properties": {
+                            "media": {
+                              "type": "object",
+                              "additionalProperties": {
+                                "$ref": "#/components/schemas/Media"
+                              }
+                            },
+                            "content": {
+                              "type": "object",
+                              "properties": {
+                                "contact": {
+                                  "type": "object",
+                                  "additionalProperties": {
+                                    "$ref": "#/components/schemas/Contact"
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ],
+                  "required": ["_id", "_refs"]
+                }
+              }
+            }
+          },
+          "404": { "$ref": "#/components/responses/notFound" }
+        }
+      }
+    },
+
+    "/contact": {
+      "get": {
+        "summary": "List contacts",
+        "operationId": "list_contact",
+        "parameters": [
+          {
+            "name": "orderBy",
+            "in": "query",
+            "schema": { "type": "string", "enum": ["name"] }
+          },
+          {
+            "name": "order",
+            "in": "query",
+            "schema": { "type": "string", "enum": ["asc", "desc"] }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "schema": { "type": "integer" },
+            "default": 0
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": { "type": "integer" },
+            "default": 50
+          },
+          {
+            "in": "query",
+            "name": "data.name",
+            "style": "deepObject",
+            "explode": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "eq": { "type": "string" },
+                "ne": { "type": "string" }
+              }
+            },
+            "example": "{}",
+            "description": "Query example: <tt>{\"eq\": \"some value\"}</tt>"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of contacts",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "total": { "type": "integer" },
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "allOf": [
+                          { "$ref": "#/components/schemas/Contact" },
+                          {
+                            "type": "object",
+                            "properties": { "_id": { "type": "number" } },
+                            "required": ["_id"]
+                          }
+                        ]
+                      }
+                    },
+                    "_refs": {
+                      "type": "object",
+                      "properties": {
+                        "media": {
+                          "type": "object",
+                          "additionalProperties": {
+                            "$ref": "#/components/schemas/Media"
+                          }
+                        },
+                        "content": { "type": "object", "properties": {} }
+                      }
+                    }
+                  },
+                  "required": ["total", "items", "_refs"]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/contact/{id}": {
+      "get": {
+        "summary": "Load contact",
+        "operationId": "load_contact",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Contact found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    { "$ref": "#/components/schemas/Contact" },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "_id": { "type": "number" },
+                        "_refs": {
+                          "type": "object",
+                          "properties": {
+                            "media": {
+                              "type": "object",
+                              "additionalProperties": {
+                                "$ref": "#/components/schemas/Media"
+                              }
+                            },
+                            "content": { "type": "object", "properties": {} }
+                          }
+                        }
+                      }
+                    }
+                  ],
+                  "required": ["_id", "_refs"]
+                }
+              }
+            }
+          },
+          "404": { "$ref": "#/components/responses/notFound" }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Media": {
+        "type": "object",
+        "properties": {
+          "size": { "type": "number" },
+          "originalname": { "type": "string" },
+          "mimetype": { "type": "string" },
+          "imagetype": { "type": "string" },
+          "width": { "type": "number" },
+          "height": { "type": "number" },
+          "created_at": { "type": "string" },
+          "title": { "type": "string" },
+          "alt": { "type": "string" }
+        },
+        "required": []
+      },
+      "Category": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "slug": { "type": "string" },
+          "contacts": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "role": { "type": "string" },
+                "contact": {
+                  "type": "object",
+                  "properties": {
+                    "_id": { "type": "string" },
+                    "_ref": { "type": "string", "enum": ["content"] },
+                    "_content": { "type": "string", "enum": ["contact"] },
+                    "_url": { "type": "string" }
+                  },
+                  "required": ["_id", "_ref", "_content"]
+                }
+              },
+              "required": ["role", "contact"]
+            }
+          }
+        },
+        "required": ["name", "slug"]
+      },
+      "Contact": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "email": { "type": "string" },
+          "phone": { "type": "string" },
+          "image": {
+            "type": "object",
+            "properties": {
+              "_id": { "type": "string" },
+              "_ref": { "type": "string", "enum": ["media"] },
+              "_src": { "type": "string" }
+            },
+            "required": ["_id", "_ref", "_src"]
+          }
+        },
+        "required": ["name", "email", "phone"]
+      }
+    },
+    "responses": { "notFound": { "description": "Not found" } }
+  },
+  "servers": [{ "url": "/api", "description": "Default URL" }]
+}

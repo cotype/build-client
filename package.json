@@ -1,0 +1,23 @@
+{
+  "name": "cotype-client",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "bin": {
+    "cotype-client": "./lib/cli.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "generate-demo": "npm run prepare && ./lib/cli.js ./demo/swagger.json ./demo/client.config.js ./demo/Api.ts",
+    "prepare": "npm run build && chmod +x ./lib/cli.js"
+  },
+  "author": "Felix Gnass",
+  "license": "MIT",
+  "dependencies": {
+    "pascal-case": "^2.0.1",
+    "typescript": "^3.4.5"
+  },
+  "devDependencies": {
+    "@types/node": "^11.13.8"
+  }
+}
