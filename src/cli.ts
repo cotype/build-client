@@ -2,6 +2,8 @@
 
 import fs from "fs";
 import path from "path";
+import findUp from "find-up";
+
 import { generateClient } from "./";
 
 async function generate(spec: string, config: string, dest: string) {
@@ -10,5 +12,15 @@ async function generate(spec: string, config: string, dest: string) {
   else console.log(code);
 }
 
-const [, , spec, config, dest] = process.argv;
-generate(spec, config, dest);
+const [, , spec, dest] = process.argv;
+if (spec && dest) {
+  const out = path.resolve(dest);
+  const config = findUp.sync("client.config.js", { cwd: path.dirname(out) });
+  if (config) {
+    generate(spec, config, out);
+  } else {
+    console.error("Missing config file: client.config.js");
+  }
+} else {
+  console.error(`Usage: cotype-client <spec> <dest>`);
+}

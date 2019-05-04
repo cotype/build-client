@@ -1,24 +1,45 @@
 {
-  "name": "cotype-client",
+  "name": "@cotype/build-client",
   "version": "0.0.1",
   "description": "",
   "main": "index.js",
   "bin": {
-    "cotype-client": "./lib/cli.js"
+    "build-client": "./lib/cli.js"
   },
   "scripts": {
     "build": "tsc",
-    "generate-demo": "npm run prepare && ./lib/cli.js ./demo/swagger.json ./demo/client.config.js ./demo/Api.ts",
-    "prepare": "npm run build && chmod +x ./lib/cli.js"
+    "generate-demo": "npm run prepare && rm -f demo/Api.ts && ./lib/cli.js ./demo/swagger.json ./demo/Api.ts",
+    "prepare": "npm run build && chmod +x ./lib/cli.js",
+    "test": "npm run generate-demo && jest"
   },
   "author": "Felix Gnass",
   "license": "MIT",
   "dependencies": {
+    "find-up": "^3.0.0",
     "oazapfts": "^1.0.0",
     "pascal-case": "^2.0.1",
     "typescript": "^3.4.5"
   },
   "devDependencies": {
-    "@types/node": "^11.13.8"
+    "@types/find-up": "^2.1.1",
+    "@types/jest": "^24.0.12",
+    "@types/node": "^11.13.8",
+    "jest": "^24.7.1",
+    "ts-jest": "^24.0.2"
+  },
+  "jest": {
+    "testMatch": [
+      "**/*.test.ts"
+    ],
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "node",
+      "ts",
+      "d.ts"
+    ],
+    "transform": {
+      "\\.ts$": "ts-jest"
+    }
   }
 }

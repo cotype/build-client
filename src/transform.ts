@@ -9,13 +9,13 @@ import {
   isMediaRef
 } from "./util";
 
-export type Join = Record<string, string[]>;
-export type Joins = Record<string, Join>;
+export type Method = { name: string; join: Join[] };
+export type Join = { type: string; props: string[] };
 
 function visitType(
   typeNode: ts.Node,
   context: ts.TransformationContext,
-  join: Join
+  joins: Join[]
 ) {
   function visitor(node: ts.Node): ts.Node {
     if (isMediaRef(node)) {
@@ -25,7 +25,8 @@ function visitType(
       ]);
     } else {
       const ref = getContentRef(node);
-      if (ref && ref in join) {
+      const isJoined = joins.some(j => j.type === ref);
+      if (ref && isJoined) {
         return ts.createIntersectionTypeNode([
           node as ts.TypeNode,
           ts.createTypeReferenceNode(ref, undefined)
@@ -43,7 +44,7 @@ function visitType(
 function visitRoot(
   root: ts.Node,
   context: ts.TransformationContext,
-  joins: Joins
+  config: Method[]
 ) {
   const visit = createVisitor(context);
   return visit(root, (node: ts.Node) => {
@@ -60,7 +61,12 @@ function visitRoot(
         });
       }
       if (!name.startsWith("_")) {
-        return visitMethod(node, context, joins[name], root);
+        return visitMethod(
+          node,
+          context,
+          config.find(m => m.name === name),
+          root
+        );
       }
     }
   });
@@ -72,7 +78,7 @@ function visitRoot(
 function visitMethod(
   method: ts.MethodDeclaration,
   context: ts.TransformationContext,
-  join: Join | undefined,
+  methodConfig: Method | undefined,
   root: ts.Node
 ) {
   function visitor(node: ts.Node): ts.Node | undefined {
@@ -98,16 +104,16 @@ function visitMethod(
       ts.isShorthandPropertyAssignment(node) &&
       getText(node.name) == "join"
     ) {
-      return !join
+      return !methodConfig
         ? undefined
         : ts.createPropertyAssignment(
             "join",
             ts.createObjectLiteral(
-              Object.entries(join).map(([name, value]) =>
+              methodConfig.join.map(({ type, props }) =>
                 ts.createPropertyAssignment(
-                  name,
+                  type,
                   ts.createArrayLiteral(
-                    value.map(v => ts.createStringLiteral(v))
+                    props.map(p => ts.createStringLiteral(p))
                   )
                 )
               )
@@ -118,7 +124,7 @@ function visitMethod(
     if (ts.isAsExpression(node)) {
       return ts.createAsExpression(
         ts.visitEachChild(node.expression, visitor, context),
-        visitAsType(node.type, context, join, root)
+        visitAsType(node.type, context, methodConfig, root)
       );
     }
 
@@ -134,27 +140,27 @@ function visitMethod(
 function visitAsType(
   node: ts.TypeNode,
   context: ts.TransformationContext,
-  join: Join | undefined,
+  methodConfig: Method | undefined,
   root: ts.Node
 ) {
   function visitor(node: ts.Node): ts.Node | undefined {
     if (ts.isPropertySignature(node) && getText(node.name) == "_refs") {
       return undefined;
     }
-    if (join && ts.isTypeReferenceNode(node)) {
+    if (methodConfig && ts.isTypeReferenceNode(node)) {
       const type = findType(root, getText(node.typeName));
-      return visitType(type, context, join);
+      return visitType(type, context, methodConfig.join);
     }
     return ts.visitEachChild(node, visitor, context);
   }
   return ts.visitEachChild(node, visitor, context);
 }
 
-export default function transform(ast: ts.SourceFile, joins: Joins) {
+export default function transform(ast: ts.SourceFile, config: Method[]) {
   const result = transformAst(
     ast,
     (node: ts.Node, context: ts.TransformationContext) => {
-      return visitRoot(node, context, joins);
+      return visitRoot(node, context, config);
     }
   );
 

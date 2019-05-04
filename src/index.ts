@@ -5,8 +5,7 @@ import inspect from "./inspect";
 export async function generateClient(spec: string, configFile: string) {
   const json = await fetchSpec(spec);
   const ast = generateAst(json);
-  const possibleJoins = inspect(ast);
+  const methods = inspect(ast);
   const config = require(configFile);
-  const joins = config(possibleJoins);
-  return transform(ast, joins);
+  return transform(ast, config(methods));
 }

@@ -31,7 +31,7 @@
           },
           {
             "in": "query",
-            "name": "join[contact]",
+            "name": "join[Contact]",
             "style": "deepObject",
             "explode": true,
             "schema": {
@@ -39,141 +39,6 @@
               "items": {
                 "type": "string",
                 "enum": ["name", "email", "phone", "image"]
-              }
-            }
-          },
-          {
-            "in": "query",
-            "name": "join[segment]",
-            "style": "deepObject",
-            "explode": true,
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string",
-                "enum": ["name", "slug", "intro", "contacts"]
-              }
-            }
-          },
-          {
-            "in": "query",
-            "name": "join[category]",
-            "style": "deepObject",
-            "explode": true,
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string",
-                "enum": [
-                  "name",
-                  "slug",
-                  "categoryCluster",
-                  "subheader",
-                  "programs",
-                  "externalPrograms",
-                  "contacts",
-                  "sections",
-                  "magazineTeaser"
-                ]
-              }
-            }
-          },
-          {
-            "in": "query",
-            "name": "join[document]",
-            "style": "deepObject",
-            "explode": true,
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string",
-                "enum": ["name", "type", "file", "keywords"]
-              }
-            }
-          },
-          {
-            "in": "query",
-            "name": "join[documentType]",
-            "style": "deepObject",
-            "explode": true,
-            "schema": {
-              "type": "array",
-              "items": { "type": "string", "enum": ["name"] }
-            }
-          },
-          {
-            "in": "query",
-            "name": "join[event]",
-            "style": "deepObject",
-            "explode": true,
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string",
-                "enum": [
-                  "title",
-                  "text",
-                  "dates",
-                  "location",
-                  "category",
-                  "ctaHref"
-                ]
-              }
-            }
-          },
-          {
-            "in": "query",
-            "name": "join[programType]",
-            "style": "deepObject",
-            "explode": true,
-            "schema": {
-              "type": "array",
-              "items": { "type": "string", "enum": ["name"] }
-            }
-          },
-          {
-            "in": "query",
-            "name": "join[jobCategory]",
-            "style": "deepObject",
-            "explode": true,
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string",
-                "enum": ["name", "teaser", "headline", "intro"]
-              }
-            }
-          },
-          {
-            "in": "query",
-            "name": "join[jobOffer]",
-            "style": "deepObject",
-            "explode": true,
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string",
-                "enum": [
-                  "name",
-                  "slug",
-                  "category",
-                  "date",
-                  "employmentType",
-                  "employmentSchema"
-                ]
-              }
-            }
-          },
-          {
-            "in": "query",
-            "name": "join[pressRelease]",
-            "style": "deepObject",
-            "explode": true,
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string",
-                "enum": ["title", "slug", "date", "text", "pdf", "images"]
               }
             }
           }
@@ -244,14 +109,14 @@
           },
           {
             "in": "query",
-            "name": "join[contact]",
+            "name": "join[Contact]",
             "style": "deepObject",
             "explode": true,
             "schema": {
               "type": "array",
               "items": {
                 "type": "string",
-                "enum": ["name", "email", "phone", "image", "serviceCenter"]
+                "enum": ["name", "email", "phone", "image"]
               }
             }
           }
@@ -471,7 +336,7 @@
                   "properties": {
                     "_id": { "type": "string" },
                     "_ref": { "type": "string", "enum": ["content"] },
-                    "_content": { "type": "string", "enum": ["contact"] },
+                    "_content": { "type": "string", "enum": ["Contact"] },
                     "_url": { "type": "string" }
                   },
                   "required": ["_id", "_ref", "_content"]

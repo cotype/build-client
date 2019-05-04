@@ -1,20 +1,20 @@
 import ts from "typescript";
 import { getText, createVisitor, transformAst } from "./util";
-import { Joins, Join } from "./transform";
+import { Method, Join } from "./transform";
 
 export default function(ast: ts.Node | ts.Node[]) {
-  const joins: Joins = {};
+  const methods: Method[] = [];
   transformAst(ast, (root, context) => {
-    visitRoot(root, context, joins);
+    visitRoot(root, context, methods);
     return root;
   });
-  return joins;
+  return methods;
 }
 
 function visitRoot(
   root: ts.Node,
   context: ts.TransformationContext,
-  joins: Joins
+  methods: Method[]
 ) {
   const visit = createVisitor(context);
   visit(root, (node: ts.Node) => {
@@ -25,16 +25,19 @@ function visitRoot(
         return visit(node, node => {
           if (ts.isPropertySignature(node) && getText(node.name) == "join") {
             // the visit the join type
-            const join: Join = (joins[name] = {});
-            const { type } = node;
-            if (!type) return;
-            return visit(type, (node: ts.Node) => {
+            const join: Join[] = [];
+            methods.push({ name, join });
+            const typeNode = node.type;
+            if (!typeNode) return;
+            return visit(typeNode, (node: ts.Node) => {
               if (ts.isPropertySignature(node)) {
-                const props: string[] = (join[getText(node.name)] = []);
-                const { type } = node;
-                if (!type) return;
+                const type = getText(node.name);
+                const props: string[] = [];
+                join.push({ type, props });
+                const typeNode = node.type;
+                if (!typeNode) return;
                 // collect the possible values
-                return visit(type, node => {
+                return visit(typeNode, node => {
                   if (ts.isStringLiteral(node)) {
                     props.push(node.text);
                   }
