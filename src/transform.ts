@@ -15,7 +15,7 @@ export type Join = { type: string; props: string[] };
 function visitType(
   typeNode: ts.Node,
   context: ts.TransformationContext,
-  method: Method | undefined
+  method?: Method
 ) {
   function visitor(node: ts.Node): ts.Node {
     if (isMediaRef(node)) {
@@ -72,6 +72,12 @@ function visitRoot(
           root
         );
       }
+    } else if (ts.isTypeAliasDeclaration(node)) {
+      return visit(node, (node: ts.Node) => {
+        if (ts.isTypeLiteralNode(node)) {
+          return visitType(node, context);
+        }
+      });
     }
   });
 }
@@ -153,7 +159,9 @@ function visitAsType(
     }
     if (ts.isTypeReferenceNode(node)) {
       const type = findType(root, getText(node.typeName));
-      return visitType(type, context, methodConfig);
+      if (type) {
+        return visitType(type, context, methodConfig);
+      }
     }
     return ts.visitEachChild(node, visitor, context);
   }

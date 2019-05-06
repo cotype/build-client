@@ -39,7 +39,6 @@ export function findType(root: ts.Node, name: string) {
       return true;
     }
   });
-  if (!found) throw new Error("Node not found: " + name);
   return found;
 }
 
