@@ -1,3 +1,15 @@
+export type ContentRef = {
+  _ref: "content";
+  _id: string;
+  _url?: string;
+};
+
+export type MediaRef = {
+  _ref: "media";
+  _id: string;
+  _src: string;
+};
+
 /**
  * Mutates the given object to recursivly resolves references.
  */

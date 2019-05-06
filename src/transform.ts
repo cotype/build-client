@@ -15,22 +15,26 @@ export type Join = { type: string; props: string[] };
 function visitType(
   typeNode: ts.Node,
   context: ts.TransformationContext,
-  joins: Join[]
+  method: Method | undefined
 ) {
   function visitor(node: ts.Node): ts.Node {
     if (isMediaRef(node)) {
       return ts.createIntersectionTypeNode([
-        node,
+        ts.createTypeReferenceNode("MediaRef", undefined),
         ts.createTypeReferenceNode("Media", undefined)
       ]);
     } else {
       const ref = getContentRef(node);
-      const isJoined = joins.some(j => j.type === ref);
-      if (ref && isJoined) {
-        return ts.createIntersectionTypeNode([
-          node as ts.TypeNode,
-          ts.createTypeReferenceNode(ref, undefined)
-        ]);
+      if (ref) {
+        const isJoined = method && method.join.some(j => j.type === ref);
+        if (isJoined) {
+          return ts.createIntersectionTypeNode([
+            ts.createTypeReferenceNode("ContentRef", undefined),
+            ts.createTypeReferenceNode(ref, undefined)
+          ]);
+        } else {
+          return ts.createTypeReferenceNode("ContentRef", undefined);
+        }
       }
     }
     return ts.visitEachChild(node, visitor, context);
@@ -147,9 +151,9 @@ function visitAsType(
     if (ts.isPropertySignature(node) && getText(node.name) == "_refs") {
       return undefined;
     }
-    if (methodConfig && ts.isTypeReferenceNode(node)) {
+    if (ts.isTypeReferenceNode(node)) {
       const type = findType(root, getText(node.typeName));
-      return visitType(type, context, methodConfig.join);
+      return visitType(type, context, methodConfig);
     }
     return ts.visitEachChild(node, visitor, context);
   }
