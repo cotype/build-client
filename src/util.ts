@@ -67,6 +67,12 @@ export function isMediaRef(node: ts.Node): node is ts.TypeNode {
   );
 }
 
+export function isContentRef(node: ts.Node): node is ts.TypeNode {
+  return (
+    ts.isTypeLiteralNode(node) && getPropertyValue(node, "_ref") === "content"
+  );
+}
+
 export function getContentRef(node: ts.Node) {
   const name = ts.isTypeLiteralNode(node) && getPropertyValue(node, "_content");
   return name && pascalCase(name);

@@ -6,7 +6,8 @@ import {
   getContentRef,
   createVisitor,
   transformAst,
-  isMediaRef
+  isMediaRef,
+  isContentRef
 } from "./util";
 
 export type Method = { name: string; join: Join[] };
@@ -24,10 +25,10 @@ function visitType(
         ts.createTypeReferenceNode("Media", undefined)
       ]);
     } else {
-      const ref = getContentRef(node);
-      if (ref) {
+      if (isContentRef(node)) {
+        const ref = getContentRef(node);
         const isJoined = method && method.join.some(j => j.type === ref);
-        if (isJoined) {
+        if (ref && isJoined) {
           return ts.createIntersectionTypeNode([
             ts.createTypeReferenceNode("ContentRef", undefined),
             ts.createTypeReferenceNode(ref, undefined)
