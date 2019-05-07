@@ -3,7 +3,7 @@ import { cg } from "oazapfts";
 import {
   getText,
   findType,
-  getContentRef,
+  getContentRefs,
   createVisitor,
   transformAst,
   isMediaRef,
@@ -26,12 +26,12 @@ function visitType(
       ]);
     } else {
       if (isContentRef(node)) {
-        const ref = getContentRef(node);
-        const isJoined = method && method.join.some(j => j.type === ref);
+        const ref = getContentRefs(node);
+        const isJoined = method && method.join.some(j => ref.includes(j.type));
         if (ref && isJoined) {
           return ts.createIntersectionTypeNode([
             ts.createTypeReferenceNode("ContentRef", undefined),
-            ts.createTypeReferenceNode(ref, undefined)
+            ...ref.map(r => ts.createTypeReferenceNode(r, undefined))
           ]);
         } else {
           return ts.createTypeReferenceNode("ContentRef", undefined);

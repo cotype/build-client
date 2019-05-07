@@ -73,7 +73,7 @@ export function isContentRef(node: ts.Node): node is ts.TypeNode {
   );
 }
 
-export function getContentRef(node: ts.Node) {
+export function getContentRefs(node: ts.Node) {
   const name = ts.isTypeLiteralNode(node) && getPropertyValue(node, "_content");
-  return name && pascalCase(name);
+  return name ? name.split(",").map(n => pascalCase(n)) : [];
 }
