@@ -2,7 +2,7 @@
   "name": "@cotype/build-client",
   "version": "0.3.0",
   "description": "",
-  "main": "index.js",
+  "main": "lib/index.js",
   "bin": {
     "build-client": "./lib/cli.js"
   },
