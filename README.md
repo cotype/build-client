@@ -9,8 +9,13 @@ npx @cotype/build-client <spec> <dest>
 Where `<spec>` is the URL of a cotype swagger.json spec and `<dest>` is the location of the `.ts` file to be generated.
 
 ```
-npx cotype-client https://example.com/rest/swagger.json ./lib/Api.ts
+npx @cotype/build-client https://example.com/rest/swagger.json ./lib/Api.ts
 ```
+
+#### Bin
+
+This package exposes the `cotype-build-client` binary when being installed as a
+dependency or globally.
 
 ## Configuration
 
