@@ -58,6 +58,18 @@ module.exports = methods =>
   }));
 ```
 
+## Node API
+
+```js
+const { generateClient } = require("@cotype/build-client");
+// import { generateClient } from "@cotype/build-client";
+
+(async () => {
+  const client = await generateClient(spec, configFile);
+  console.log(client);
+})();
+```
+
 # License
 
 MIT
