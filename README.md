@@ -19,6 +19,11 @@ dependency or globally.
 
 ## Configuration
 
+The tool looks for a `client.config.js` in the provided dest folder or any of its parents
+when being used via cli.
+
+### Joining
+
 Requests to the cotype REST api can specify if they want to _join_ data of referenced contents (rather than just returning their IDs and links).
 
 For each endpoint we can fine-tune which data should be joined:
