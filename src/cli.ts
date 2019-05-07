@@ -22,5 +22,5 @@ if (spec && dest) {
     console.error("Missing config file: client.config.js");
   }
 } else {
-  console.error(`Usage: cotype-client <spec> <dest>`);
+  console.error(`Usage: cotype-build-client <spec> <dest>`);
 }
