@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "bin": {
-    "build-client": "./lib/cli.js"
+    "cotype-build-client": "./lib/cli.js"
   },
   "scripts": {
     "build": "tsc",

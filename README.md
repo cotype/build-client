@@ -9,10 +9,20 @@ npx @cotype/build-client <spec> <dest>
 Where `<spec>` is the URL of a cotype swagger.json spec and `<dest>` is the location of the `.ts` file to be generated.
 
 ```
-npx cotype-client https://example.com/rest/swagger.json ./lib/Api.ts
+npx @cotype/build-client https://example.com/rest/swagger.json ./lib/Api.ts
 ```
 
+#### Bin
+
+This package exposes the `cotype-build-client` binary when being installed as a
+dependency or globally.
+
 ## Configuration
+
+The tool looks for a `client.config.js` in the provided dest folder or any of its parents
+when being used via cli.
+
+### Joining
 
 Requests to the cotype REST api can specify if they want to _join_ data of referenced contents (rather than just returning their IDs and links).
 
