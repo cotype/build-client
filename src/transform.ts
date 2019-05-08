@@ -28,10 +28,14 @@ function visitType(
       if (isContentRef(node)) {
         const ref = getContentRefs(node);
         const isJoined = method && method.join.some(j => ref.includes(j.type));
-        if (ref && isJoined) {
+        if (ref.length && isJoined) {
           return ts.createIntersectionTypeNode([
             ts.createTypeReferenceNode("ContentRef", undefined),
-            ...ref.map(r => ts.createTypeReferenceNode(r, undefined))
+            ref.length > 1
+              ? ts.createUnionTypeNode(
+                  ref.map(r => ts.createTypeReferenceNode(r, undefined))
+                )
+              : ts.createTypeReferenceNode(ref[0], undefined)
           ]);
         } else {
           return ts.createTypeReferenceNode("ContentRef", undefined);
