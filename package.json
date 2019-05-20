@@ -1,46 +1,46 @@
 {
-    "name": "@cotype/build-client",
-    "version": "1.0.0",
-    "description": "",
-    "main": "lib/index.js",
-    "bin": {
-        "cotype-build-client": "./lib/cli.js"
-    },
-    "scripts": {
-        "build": "tsc",
-        "generate-demo": "npm run prepare && rm -f demo/Api.ts && ./lib/cli.js ./demo/swagger.json ./demo/Api.ts",
-        "prepare": "npm run build && chmod +x ./lib/cli.js",
-        "test": "npm run generate-demo && jest"
-    },
-    "author": "Felix Gnass",
-    "license": "MIT",
-    "dependencies": {
-        "@loopback/openapi-v3-types": "1.0.18",
-        "find-up": "^3.0.0",
-        "oazapfts": "^1.0.1",
-        "pascal-case": "^2.0.1",
-        "typescript": "^3.4.5"
-    },
-    "devDependencies": {
-        "@types/find-up": "^2.1.1",
-        "@types/jest": "^24.0.12",
-        "@types/node": "^11.13.10",
-        "jest": "^24.8.0",
-        "ts-jest": "^24.0.2"
-    },
-    "jest": {
-        "testMatch": [
-            "**/*.test.ts"
-        ],
-        "moduleFileExtensions": [
-            "js",
-            "json",
-            "node",
-            "ts",
-            "d.ts"
-        ],
-        "transform": {
-            "\\.ts$": "ts-jest"
-        }
+  "name": "@cotype/build-client",
+  "version": "1.0.1",
+  "description": "",
+  "main": "lib/index.js",
+  "bin": {
+    "cotype-build-client": "./lib/cli.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "generate-demo": "npm run prepare && rm -f demo/Api.ts && ./lib/cli.js ./demo/swagger.json ./demo/Api.ts",
+    "prepare": "npm run build && chmod +x ./lib/cli.js",
+    "test": "npm run generate-demo && jest"
+  },
+  "author": "Felix Gnass",
+  "license": "MIT",
+  "dependencies": {
+    "@loopback/openapi-v3-types": "1.0.18",
+    "find-up": "^3.0.0",
+    "oazapfts": "^1.0.1",
+    "pascal-case": "^2.0.1",
+    "typescript": "^3.4.5"
+  },
+  "devDependencies": {
+    "@types/find-up": "^2.1.1",
+    "@types/jest": "^24.0.12",
+    "@types/node": "^11.13.10",
+    "jest": "^24.8.0",
+    "ts-jest": "^24.0.2"
+  },
+  "jest": {
+    "testMatch": [
+      "**/*.test.ts"
+    ],
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "node",
+      "ts",
+      "d.ts"
+    ],
+    "transform": {
+      "\\.ts$": "ts-jest"
     }
+  }
 }
