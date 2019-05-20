@@ -3,11 +3,14 @@
 import fs from "fs";
 import path from "path";
 import findUp from "find-up";
+import { fetchSpec } from "oazapfts";
 
 import { generateClient } from "./";
 
-async function generate(spec: string, config: string, dest: string) {
-  const code = await generateClient(spec, path.resolve(config));
+async function generate(spec: string, configFile: string, dest: string) {
+  const json = await fetchSpec(spec);
+  const config = require(path.resolve(configFile));
+  const code = await generateClient(json, config);
   if (dest) fs.writeFileSync(dest, code);
   else console.log(code);
 }
