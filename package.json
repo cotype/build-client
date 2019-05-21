@@ -17,7 +17,7 @@
   "dependencies": {
     "@loopback/openapi-v3-types": "1.0.18",
     "find-up": "^3.0.0",
-    "oazapfts": "^1.0.2",
+    "oazapfts": "^1.1.0",
     "pascal-case": "^2.0.1",
     "typescript": "^3.4.5"
   },
