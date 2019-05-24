@@ -17,14 +17,14 @@
   "dependencies": {
     "@loopback/openapi-v3-types": "1.0.18",
     "find-up": "^3.0.0",
-    "oazapfts": "^1.1.0",
+    "oazapfts": "^1.1.1",
     "pascal-case": "^2.0.1",
     "typescript": "^3.4.5"
   },
   "devDependencies": {
     "@types/find-up": "^2.1.1",
-    "@types/jest": "^24.0.12",
-    "@types/node": "^11.13.10",
+    "@types/jest": "^24.0.13",
+    "@types/node": "^11.13.11",
     "jest": "^24.8.0",
     "ts-jest": "^24.0.2"
   },
