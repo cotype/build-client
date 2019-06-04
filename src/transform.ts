@@ -1,5 +1,5 @@
 import ts from "typescript";
-import { cg } from "@cotype/oazapfts";
+import { cg } from "oazapfts";
 import {
   getText,
   findType,

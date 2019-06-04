@@ -15,9 +15,9 @@
   "author": "Felix Gnass",
   "license": "MIT",
   "dependencies": {
-    "@cotype/oazapfts": "^1.2.0-RC.1",
     "@loopback/openapi-v3-types": "^1.0.21",
     "find-up": "^4.0.0",
+    "oazapfts": "^1.2.0",
     "pascal-case": "^2.0.1",
     "typescript": "^3.5.1"
   },

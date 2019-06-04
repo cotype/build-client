@@ -1,5 +1,5 @@
 import { OpenApiSpec } from "@loopback/openapi-v3-types";
-import { generateAst } from "@cotype/oazapfts";
+import { generateAst } from "oazapfts";
 import transform, { Method } from "./transform";
 import inspect from "./inspect";
 

@@ -3,7 +3,7 @@
 import fs from "fs";
 import path from "path";
 import findUp from "find-up";
-import { fetchSpec } from "@cotype/oazapfts";
+import { fetchSpec } from "oazapfts";
 
 import { generateClient } from "./";
 
