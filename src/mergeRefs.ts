@@ -11,39 +11,40 @@ export type MediaRef = {
 };
 
 /**
- * Mutates the given object to recursivly resolves references.
+ * Mutates the given object to recursively resolves references.
  */
 function mergeRefs(root: any) {
+  if (typeof root !== "object" || !root._refs) return root;
   const { _refs, ...data } = root;
-  if (_refs) {
-    const walk = (obj: any) => {
-      if (!obj) return;
-      if (typeof obj !== "object") return;
-      if (Array.isArray(obj)) {
-        obj.forEach(walk);
-        return;
-      }
-      Object.keys(obj).forEach(key => {
-        const value = obj[key];
-        if (key === "_ref") {
-          const id = obj._id;
-          const refs = _refs[value];
-          if (!refs || !id) return;
 
-          const type: string | undefined = obj[`_${value}`];
-          const lookup = type ? refs[type] : refs;
-          if (!lookup) return;
+  const walk = (obj: any) => {
+    if (!obj) return;
+    if (typeof obj !== "object") return;
+    if (Array.isArray(obj)) {
+      obj.forEach(walk);
+      return;
+    }
+    Object.keys(obj).forEach(key => {
+      const value = obj[key];
+      if (key === "_ref") {
+        const id = obj._id;
+        const refs = _refs[value];
+        if (!refs || !id) return;
 
-          const ref = lookup[id];
-          if (ref) {
-            walk(ref);
-            Object.assign(obj, ref);
-          }
+        const type: string | undefined = obj[`_${value}`];
+        const lookup = type ? refs[type] : refs;
+        if (!lookup) return;
+
+        const ref = lookup[id];
+        if (ref) {
+          walk(ref);
+          Object.assign(obj, ref);
         }
-        walk(value);
-      });
-    };
-    walk(data);
-  }
+      }
+      walk(value);
+    });
+  };
+  walk(data);
+
   return data;
 }
