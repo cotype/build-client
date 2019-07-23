@@ -34,7 +34,7 @@ const api = new Api();
 it("should join contacts", async () => {
   const res = await api.loadCategory("id");
   expect(_fetch).toHaveBeenCalledWith(
-    "/category/id?join[Contact][0]=name&join[Contact][1]=email",
+    "/category/id?join[Contact][]=name&join[Contact][]=email",
     { headers: { Accept: "application/json" } }
   );
   expect(res).toMatchObject({
