@@ -2,6 +2,7 @@ export type ContentRef = {
   _ref: "content";
   _id: string;
   _url?: string;
+  _content?: string;
 };
 
 export type MediaRef = {
