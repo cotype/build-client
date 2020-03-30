@@ -126,7 +126,7 @@ function visitMethod(
             ts.createObjectLiteral(
               methodConfig.join.map(({ type, props }) =>
                 ts.createPropertyAssignment(
-                  type,
+                  type.startsWith('*') ? ts.createLiteral(type) : type,
                   ts.createArrayLiteral(
                     props.map(p => ts.createStringLiteral(p))
                   )
